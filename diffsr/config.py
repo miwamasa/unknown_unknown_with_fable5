@@ -26,8 +26,8 @@ class Config:
         y_max_abs: |y| がこれを超えるサンプルは生成時に棄却。
         n_train: 学習用の式の本数。
         d_model / n_heads / n_layers_dec / n_layers_enc: モデル寸法。
-        encoder_type: "mean"（v1: self-attn+プーリングなし全点メモリ）
-            / "pma"（v2: learned query プーリング）。
+        encoder_type: "points"（v1: 全観測点の埋め込みをそのままメモリにする）
+            / "pma"（v2: learned query による m 個への Set Transformer 風プーリング）。
         diffusion_steps: 逆過程のステップ数。
         batch_size / lr / epochs: 学習ハイパーパラメータ。
         k_samples: 推論時の best-of-k の k。
@@ -53,7 +53,7 @@ class Config:
     n_heads: int = 2
     n_layers_dec: int = 2
     n_layers_enc: int = 2
-    encoder_type: str = "mean"
+    encoder_type: str = "points"
     # --- 拡散・学習 ---
     diffusion_steps: int = 20
     batch_size: int = 128
