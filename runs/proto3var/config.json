@@ -1,0 +1,45 @@
+{
+  "name": "proto3var",
+  "n_vars": 3,
+  "operators": [
+    "add",
+    "sub",
+    "mul",
+    "div",
+    "pow",
+    "sin",
+    "cos",
+    "exp",
+    "log",
+    "sqrt"
+  ],
+  "integers": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "max_ops": 7,
+  "seq_len": 32,
+  "n_points": 64,
+  "x_range": [
+    -4.0,
+    4.0
+  ],
+  "y_max_abs": 10000.0,
+  "n_train": 60000,
+  "d_model": 128,
+  "n_heads": 4,
+  "n_layers_dec": 4,
+  "n_layers_enc": 3,
+  "encoder_type": "pma",
+  "diffusion_steps": 40,
+  "batch_size": 128,
+  "lr": 0.0003,
+  "epochs": 4,
+  "k_samples": 32,
+  "temperature": 1.0,
+  "lambda_complexity": 0.0001,
+  "seed": 0
+}
