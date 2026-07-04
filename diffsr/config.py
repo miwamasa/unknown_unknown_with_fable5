@@ -79,8 +79,8 @@ PRESETS: dict[str, Config] = {
         integers=(1, 2, 3, 4, 5),
         max_ops=7,
         seq_len=32,
-        n_points=128,
-        n_train=80000,
+        n_points=64,  # 128から縮小: CPU 60分予算に収めるため（EXPERIMENTS.md §5）
+        n_train=60000,
         d_model=128,
         n_heads=4,
         n_layers_dec=4,
@@ -89,7 +89,7 @@ PRESETS: dict[str, Config] = {
         diffusion_steps=40,
         batch_size=128,
         lr=3e-4,
-        epochs=6,
+        epochs=4,
         k_samples=32,
     ),
 }
