@@ -140,11 +140,22 @@ def random_prior_baseline(
     seed: int = 0,
     fit_time_budget_s: float = 2.0,
 ) -> BaselineResult:
-    """事前分布から k 本サンプル→BFGS→最良選択（学習なしアブレーション）。"""
+    """事前分布から k 本サンプル→BFGS→最良選択（学習なしアブレーション）。
+
+    語彙は cfg.n_vars 変数を含むため、X の列数が足りない場合は提案手法の
+    推論時と同じく一様乱数でパディングして評価する。
+    """
     from diffsr.expressions.sympy_bridge import complexity
 
     t0 = time.monotonic()
     rng = np.random.default_rng(seed)
+    d_orig = X.shape[1]
+    if d_orig < cfg.n_vars:
+        lo, hi = cfg.x_range
+        X = np.concatenate(
+            [X, np.random.default_rng(seed + 10_000).uniform(lo, hi, (X.shape[0], cfg.n_vars - d_orig))],
+            axis=1,
+        )
     best = None
     best_score = float("inf")
     for _ in range(k):
@@ -167,5 +178,13 @@ def random_prior_baseline(
     expr = to_sympy(tree, const_values=None).subs(
         {sp.Symbol(f"c{i}"): v for i, v in enumerate(snap_constants(consts))}
     )
-    return BaselineResult("RandomPrior", expr, lambda Xq: f(Xq, consts),
-                          time.monotonic() - t0)
+
+    def y_pred_fn(Xq: np.ndarray) -> np.ndarray:
+        if Xq.shape[1] < cfg.n_vars:
+            lo, hi = cfg.x_range
+            pad = np.random.default_rng(seed + 10_000).uniform(
+                lo, hi, (Xq.shape[0], cfg.n_vars - Xq.shape[1]))
+            Xq = np.concatenate([Xq, pad], axis=1)
+        return f(Xq, consts)
+
+    return BaselineResult("RandomPrior", expr, y_pred_fn, time.monotonic() - t0)

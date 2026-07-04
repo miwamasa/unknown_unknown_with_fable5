@@ -86,24 +86,27 @@ def main() -> None:
                                         "expr": None, "invalid_rate": res.invalid_rate,
                                         "time_s": elapsed}
 
-        # --- ベースライン ---
+        # --- ベースライン（1手法の失敗でスイート全体を止めない） ---
+        def run_baseline(name: str, fn) -> None:
+            try:
+                r = fn()
+                y_pred = r.y_pred_fn(X_test[:, : prob.n_vars]) if r.expr is not None else None
+                m, r2 = evaluate_sympy_expr(r.expr, true_expr, y_pred, y_test)
+                row["methods"][name] = {
+                    "match": bool(m), "r2": r2, "expr": str(r.expr), "time_s": r.elapsed_s}
+            except Exception as e:
+                row["methods"][name] = {"match": False, "r2": float("-inf"),
+                                        "expr": None, "error": repr(e)}
+
         if "random" not in args.skip:
-            r = random_prior_baseline(cfg, vocab, tokenizer, X, y, k=k, seed=args.seed)
-            y_pred = r.y_pred_fn(X_test) if r.expr is not None else None
-            m, r2 = evaluate_sympy_expr(r.expr, true_expr, y_pred, y_test)
-            row["methods"]["RandomPrior"] = {
-                "match": bool(m), "r2": r2, "expr": str(r.expr), "time_s": r.elapsed_s}
+            run_baseline("RandomPrior", lambda: random_prior_baseline(
+                cfg, vocab, tokenizer, X, y, k=k, seed=args.seed))
         if "lasso" not in args.skip:
-            r = lasso_baseline(X[:, : prob.n_vars], y, seed=args.seed)
-            m, r2 = evaluate_sympy_expr(r.expr, true_expr, r.y_pred_fn(X_test[:, : prob.n_vars]), y_test)
-            row["methods"]["Lasso"] = {
-                "match": bool(m), "r2": r2, "expr": str(sp.nsimplify(r.expr, tolerance=1e-4, rational=False)) if r.expr is not None else None,
-                "time_s": r.elapsed_s}
+            run_baseline("Lasso", lambda: lasso_baseline(
+                X[:, : prob.n_vars], y, seed=args.seed))
         if "gplearn" not in args.skip:
-            r = gplearn_baseline(X[:, : prob.n_vars], y, seed=args.seed)
-            m, r2 = evaluate_sympy_expr(r.expr, true_expr, r.y_pred_fn(X_test[:, : prob.n_vars]), y_test)
-            row["methods"]["gplearn"] = {
-                "match": bool(m), "r2": r2, "expr": str(r.expr), "time_s": r.elapsed_s}
+            run_baseline("gplearn", lambda: gplearn_baseline(
+                X[:, : prob.n_vars], y, seed=args.seed))
 
         rows.append(row)
         summary = "  ".join(
