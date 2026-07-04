@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+diffsr/__init__.py
+diffsr/config.py
+diffsr.egg-info/PKG-INFO
+diffsr.egg-info/SOURCES.txt
+diffsr.egg-info/dependency_links.txt
+diffsr.egg-info/requires.txt
+diffsr.egg-info/top_level.txt
+diffsr/expressions/__init__.py
+diffsr/expressions/grammar.py
+diffsr/expressions/sympy_bridge.py
+diffsr/expressions/tokenizer.py
+diffsr/expressions/tree.py
+tests/test_tokenizer.py

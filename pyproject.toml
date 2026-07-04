@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffsr"
+version = "0.1.0"
+description = "Symbolic regression via masked discrete diffusion over prefix-notation expression tokens"
+requires-python = ">=3.10"
+dependencies = [
+    "torch",
+    "numpy",
+    "scipy",
+    "sympy",
+    "scikit-learn",
+    "gplearn",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["diffsr*"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: 学習を伴う遅いテスト（-m 'not slow' で除外可）",
+]
