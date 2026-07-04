@@ -1,0 +1,11 @@
+{
+  "model": "runs/proto3var",
+  "n": 100,
+  "k": 8,
+  "seed": 999,
+  "expression_match_rate": 0.14,
+  "skeleton_match_rate": 0.1,
+  "r2_gt_0.999_rate": 0.22,
+  "mean_invalid_rate": 0.345,
+  "no_candidate_rate": 0.0
+}
