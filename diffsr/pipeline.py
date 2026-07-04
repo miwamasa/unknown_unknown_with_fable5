@@ -78,8 +78,13 @@ def predict_expression(
     """
     k = k or cfg.k_samples
     X = np.atleast_2d(np.asarray(X, dtype=float))
-    if X.shape[1] < cfg.n_vars:  # 使わない変数は 0 で埋める（学習分布と同様に周辺化はしない簡易策）
-        X = np.concatenate([X, np.zeros((X.shape[0], cfg.n_vars - X.shape[1]))], axis=1)
+    if X.shape[1] < cfg.n_vars:
+        # 不足する変数列は学習分布と同じ一様乱数で埋める（学習時も未使用変数は
+        # 一様サンプリングされた値を持つため、ゼロ埋めより分布が近い）
+        pad_rng = np.random.default_rng(seed + 10_000)
+        lo, hi = cfg.x_range
+        pad = pad_rng.uniform(lo, hi, size=(X.shape[0], cfg.n_vars - X.shape[1]))
+        X = np.concatenate([X, pad], axis=1)
     y = np.asarray(y, dtype=float)
 
     model.eval()

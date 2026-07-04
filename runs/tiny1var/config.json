@@ -1,0 +1,37 @@
+{
+  "name": "tiny1var",
+  "n_vars": 1,
+  "operators": [
+    "add",
+    "sub",
+    "mul",
+    "sin"
+  ],
+  "integers": [
+    1,
+    2,
+    3
+  ],
+  "max_ops": 4,
+  "seq_len": 16,
+  "n_points": 100,
+  "x_range": [
+    -4.0,
+    4.0
+  ],
+  "y_max_abs": 10000.0,
+  "n_train": 20000,
+  "d_model": 64,
+  "n_heads": 2,
+  "n_layers_dec": 2,
+  "n_layers_enc": 2,
+  "encoder_type": "points",
+  "diffusion_steps": 20,
+  "batch_size": 128,
+  "lr": 0.0003,
+  "epochs": 8,
+  "k_samples": 16,
+  "temperature": 1.0,
+  "lambda_complexity": 0.0001,
+  "seed": 0
+}
