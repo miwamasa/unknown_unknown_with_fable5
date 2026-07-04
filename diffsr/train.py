@@ -39,13 +39,18 @@ def problems_to_tensors(problems: list[Problem]) -> tuple[torch.Tensor, torch.Te
     return ids, pts
 
 
+def _print_flush(*args) -> None:
+    print(*args, flush=True)  # nohup リダイレクト先でもリアルタイムに見えるように
+
+
 def train_model(
     cfg: Config,
     unconditional: bool = False,
     out_dir: str | Path | None = None,
     n_train: int | None = None,
     epochs: int | None = None,
-    log_fn=print,
+    log_fn=_print_flush,
+    log_every_steps: int = 100,
 ) -> tuple[DiffSRModel, list[float]]:
     """データ生成＋学習を実行し、(model, エポック平均損失の列) を返す。
 
@@ -55,6 +60,7 @@ def train_model(
         out_dir: 指定すると model.pt / config.json / losses.json を保存。
         n_train / epochs: cfg の値の上書き（テストの短縮用）。
         log_fn: 進捗ロガー。
+        log_every_steps: ステップ単位の計時ログ（data/train 秒数）の間隔。
     """
     n_train = n_train or cfg.n_train
     epochs = epochs or cfg.epochs
@@ -69,18 +75,28 @@ def train_model(
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr)
     losses: list[float] = []
     model.train()
+    step = 0
     for ep in range(epochs):
         perm = torch.randperm(len(ids), generator=gen)
         ep_losses = []
         for i in range(0, len(ids), cfg.batch_size):
+            ts = time.monotonic()
             b = perm[i : i + cfg.batch_size]
             x0 = ids[b]
             points = None if unconditional else pts[b]
+            t_data = time.monotonic()
             loss = diffusion.loss(model, x0, points, generator=gen)
             opt.zero_grad()
             loss.backward()
             opt.step()
+            t_train = time.monotonic()
             ep_losses.append(loss.item())
+            if step % log_every_steps == 0:
+                log_fn(
+                    f"step={step} data={t_data-ts:.3f}s train={t_train-t_data:.3f}s "
+                    f"loss={ep_losses[-1]:.4f}"
+                )
+            step += 1
         losses.append(float(np.mean(ep_losses)))
         log_fn(f"epoch {ep+1}/{epochs}  loss={losses[-1]:.4f}  ({time.monotonic()-t0:.0f}s)")
 

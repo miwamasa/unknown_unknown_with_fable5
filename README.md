@@ -88,6 +88,19 @@ scripts/           # CLI（train / evaluate / eval_indist / run_benchmark）
 tests/             # pytest（fast / slow マーカー）
 ```
 
+## 主要な結果（詳細は EXPERIMENTS.md）
+
+| 実験 | 結果 |
+|---|---|
+| tiny1var（1変数）end-to-end | held-out 10式中 **7/10** 復元（k=16）、**9/10**（k=64） |
+| proto3var in-distribution 100問 | 記号的一致 **0.16**（k=32）、R²>0.999 率 0.27 |
+| Nguyen / Feynman 易問（k=32） | DiffSR 0/20（gplearn は Feynman 5/10） |
+| 同じ式を学習区間のデータで条件付け | **3/5 復元** → ベンチ全滅の主因は条件付けデータの分布外性（EXPERIMENTS.md §6.4） |
+
+要点: マスク拡散＋BFGS＋best-of-k は**候補発生器としては機能する**（tiny規模で実証）。
+一方、エンコーダが学習時の入力レンジに強く依存するため、分布外のベンチマークには
+そのままでは汎化しない。対策候補は range randomization・入力標準化（同 §6.4）。
+
 ## 既知の制約
 
 - クリーンな合成データのみ（ノイズ耐性は未評価。SPEC.md スコープ参照）

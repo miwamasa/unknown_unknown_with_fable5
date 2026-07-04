@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "suite": "feynman",
+    "model": "runs/proto3var",
+    "k": 128,
+    "seed": 0,
+    "n_points": 64,
+    "n_test": 200
+  },
+  "rows": [
+    {
+      "problem": "Feynman I.12.1 (F=mu*N)",
+      "true": "x0*x1",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.43928724022732757,
+          "expr": "x1 + 0.39295",
+          "complexity": 3,
+          "invalid_rate": 0.328125,
+          "time_s": 2.0810761200000343
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.14.3 (U=m*g*z)",
+      "true": "x0*x1*x2",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.47278913357722896,
+          "expr": "x1*x2",
+          "complexity": 3,
+          "invalid_rate": 0.484375,
+          "time_s": 2.038389043999814
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.14.4 (U=k*x^2/2)",
+      "true": "x0*x1**2/2",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.7739966993071897,
+          "expr": "x1**x0",
+          "complexity": 3,
+          "invalid_rate": 0.34375,
+          "time_s": 2.4609806260004916
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.25.13 (V=q/C)",
+      "true": "x0/x1",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.2717036312097547,
+          "expr": "exp(cos(x1))",
+          "complexity": 3,
+          "invalid_rate": 0.2890625,
+          "time_s": 2.075638188999619
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.29.4 (k=omega/c)",
+      "true": "x0/x1",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.2717036312097547,
+          "expr": "exp(cos(x1))",
+          "complexity": 3,
+          "invalid_rate": 0.2890625,
+          "time_s": 2.1533594969996557
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.39.1 (E=3*p*V/2)",
+      "true": "3*x0*x1/2",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.7193683594829344,
+          "expr": "1.027713*x0 + x1",
+          "complexity": 5,
+          "invalid_rate": 0.2421875,
+          "time_s": 2.114589517999775
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.43.31 (D=mu*k*T)",
+      "true": "x0*x1*x2",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": 0.47278913357722896,
+          "expr": "x1*x2",
+          "complexity": 3,
+          "invalid_rate": 0.484375,
+          "time_s": 2.0655186430003596
+        }
+      }
+    },
+    {
+      "problem": "Feynman II.3.24 (h=P/(4*pi*r^2))",
+      "true": "x0/(4*pi*x1**2)",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": -0.023409662315566626,
+          "expr": "0.114062228361000",
+          "complexity": 3,
+          "invalid_rate": 0.3828125,
+          "time_s": 2.2721210120007527
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.27.6 (f=1/(1/d1+n/d2))",
+      "true": "1/(x1/x2 + 1/x0)",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": -0.0004772275665918535,
+          "expr": "0.535645800261177",
+          "complexity": 2,
+          "invalid_rate": 0.2421875,
+          "time_s": 2.1044796149999456
+        }
+      }
+    },
+    {
+      "problem": "Feynman I.6.20a (gauss)",
+      "true": "sqrt(2)*exp(-x0**2/2)/(2*sqrt(pi))",
+      "methods": {
+        "DiffSR": {
+          "match": false,
+          "r2": -0.002777078100925756,
+          "expr": "0.192367832262593",
+          "complexity": 3,
+          "invalid_rate": 0.2890625,
+          "time_s": 2.212247356000262
+        }
+      }
+    }
+  ]
+}

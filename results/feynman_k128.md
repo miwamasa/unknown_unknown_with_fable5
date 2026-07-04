@@ -1,0 +1,20 @@
+# ベンチマーク結果: feynman
+
+モデル: `runs/proto3var` / k=128 / seed=0 / 条件付け 64 点 / テスト 200 点
+
+| 問題 | 正解 | DiffSR 一致 | DiffSR R² |
+|---|---|---|---|
+| Feynman I.12.1 (F=mu*N) | `x0*x1` | ✘ | 0.439 |
+| Feynman I.14.3 (U=m*g*z) | `x0*x1*x2` | ✘ | 0.473 |
+| Feynman I.14.4 (U=k*x^2/2) | `x0*x1**2/2` | ✘ | 0.774 |
+| Feynman I.25.13 (V=q/C) | `x0/x1` | ✘ | 0.272 |
+| Feynman I.29.4 (k=omega/c) | `x0/x1` | ✘ | 0.272 |
+| Feynman I.39.1 (E=3*p*V/2) | `3*x0*x1/2` | ✘ | 0.719 |
+| Feynman I.43.31 (D=mu*k*T) | `x0*x1*x2` | ✘ | 0.473 |
+| Feynman II.3.24 (h=P/(4*pi*r^2)) | `x0/(4*pi*x1**2)` | ✘ | -0.023 |
+| Feynman I.27.6 (f=1/(1/d1+n/d2)) | `1/(x1/x2 + 1/x0)` | ✘ | -0.000 |
+| Feynman I.6.20a (gauss) | `sqrt(2)*exp(-x0**2/2)/(2*sqrt(pi))` | ✘ | -0.003 |
+
+## 集計（記号的一致数 / 問題数）
+
+- DiffSR: 0/10
